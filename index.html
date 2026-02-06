@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Afrin ❤️</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #ff9966, #ff5e62, #2c3e50);
+      transition: background 2s ease;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: min(92vw, 820px);
+      padding: clamp(20px, 4vw, 40px);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 60px rgba(255, 77, 109, 0.25);
+      animation: fadeIn 1.2s ease;
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 22px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(45deg, #ff4d6d, #ff758f);
+      color: white;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255,77,109,.4);
+    }
+
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .moon {
+      position: fixed;
+      top: 60px;
+      right: 60px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, #e6f0ff 60%, #bcd0ff);
+      box-shadow: 0 0 30px rgba(255,255,255,0.8),
+                  0 0 60px rgba(180,200,255,0.6);
+      opacity: 0;
+      transition: opacity 3s ease;
+      z-index: 1;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: twinkle 3s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.1; }
+      to { opacity: 1; }
+    }
+
+    .sky-text {
+      position: fixed;
+      top: 5%;
+      width: 100%;
+      text-align: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .sky-letter {
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 38px);
+      margin: 0 2px;
+      opacity: 0;
+      text-shadow: 0 0 10px #ffd1dc, 0 0 20px #ff8fa3;
+      animation: sparkle 2s infinite alternate;
+      position: relative;
+    }
+
+    .mini-star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+      top: -6px;
+      right: -4px;
+    }
+
+    @keyframes sparkle {
+      from { text-shadow: 0 0 6px #ffd1dc; }
+      to { text-shadow: 0 0 22px #ff8fa3; }
+    }
+
+    .story-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .polaroid {
+      background: #fff;
+      color: #333;
+      padding: 10px;
+      width: 110px;
+      border-radius: 6px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transform: rotate(-2deg);
+      transition: .25s ease;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .polaroid:hover {
+      transform: scale(1.08) rotate(0deg);
+    }
+
+    .story-view { margin-top: 20px; transition: opacity .8s ease; }
+    .story-view.fade { opacity: 0; }
+
+    .story-view img {
+      width: min(70vw, 240px);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: transform 3.5s ease, opacity .8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="sky-text" id="skyText"></div>
+  <div class="moon" id="moon"></div>
+
+  <div class="card">
+    <h1>Afrin ❤️</h1>
+    <div id="text"></div>
+
+    <button id="playBtn">Play Scene</button>
+    <audio id="bgMusic" src="sitaare.mp3"></audio>
+
+    <h2 style="font-family:'Playfair Display',serif;color:#ffd1dc;margin-top:25px;">Our Story</h2>
+
+    <div class="story-buttons">
+      <div class="polaroid" onclick="showStory(0)">First Meet</div>
+      <div class="polaroid" onclick="showStory(1)">First Photo</div>
+      <div class="polaroid" onclick="showStory(2)">Memory</div>
+      <div class="polaroid" onclick="showStory(3)">Today</div>
+    </div>
+
+    <div id="storyView" class="story-view">
+      <img id="slideshowImg" src="meet.jpg" />
+      <div id="slideshowText" style="margin-top:10px;">The day we first met.</div>
+    </div>
+  </div>
+
+  <div id="endingScene" style="position:fixed;inset:0;background:black;color:white;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Playfair Display',serif;font-size:34px;opacity:0;pointer-events:none;transition:opacity 2s;z-index:5;">
+    <div>I love you Afrin ❤️</div>
+    <div style="font-size:20px;margin-top:10px;">— Sahil</div>
+    <button onclick="replayStory()" style="margin-top:20px;">Replay Story</button>
+  </div>
+
+  <script>
+    const message = "Like the moon belongs to the night, my heart belongs to you.Forever feels beautiful when I think of us.";
+    const skyMessage = "Sahil ❤️ Afrin";
+
+    const stories = [
+      { img: "meet.jpg.jpeg", text: "The day we first met." },
+      { img: "firstphoto.jpg.jpeg", text: "Our first photo together." },
+      { img: "memory.jpg.jpeg", text: "One of my favorite memories." },
+      { img: "today.jpg.jpeg", text: "Still writing our story." }
+    ];
+
+    let slideIndex = 0;
+    let i = 0;
+    let j = 0;
+    let slideshowTimer;
+
+    function typeWriter() {
+      if (i < message.length) {
+        document.getElementById("text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 35);
+      }
+    }
+
+    function typeSkyText() {
+      const container = document.getElementById("skyText");
+      if (j < skyMessage.length) {
+        const span = document.createElement("span");
+        span.className = "sky-letter";
+        span.innerText = skyMessage.charAt(j);
+        span.style.opacity = "1";
+
+        const miniStar = document.createElement("div");
+        miniStar.className = "mini-star";
+        span.appendChild(miniStar);
+
+        container.appendChild(span);
+        j++;
+        setTimeout(typeSkyText, 120);
+      }
+    }
+
+    function showLove() {
+      typeWriter();
+      typeSkyText();
+
+      document.body.style.background =
+        "linear-gradient(180deg, #0f2027, #203a43, #2c5364)";
+
+      const moon = document.getElementById("moon");
+      if (moon) moon.style.opacity = "1";
+
+      const music = document.getElementById("bgMusic");
+      if (music) {
+        music.volume = 0.6;
+        music.play().catch(() => {});
+      }
+    }
+
+    function showStory(index) {
+      slideIndex = index;
+      updateSlide();
+    }
+
+    function updateSlide() {
+      const view = document.getElementById("storyView");
+      const img = document.getElementById("slideshowImg");
+      const text = document.getElementById("slideshowText");
+
+      view.classList.add("fade");
+
+      setTimeout(() => {
+        img.src = stories[slideIndex].img;
+        text.innerText = stories[slideIndex].text;
+        img.style.transform = "scale(1.08)";
+        view.classList.remove("fade");
+      }, 300);
+    }
+
+    function startSlideshow() {
+      slideshowTimer = setInterval(() => {
+        slideIndex++;
+        if (slideIndex >= stories.length) {
+          clearInterval(slideshowTimer);
+          showEnding();
+          return;
+        }
+        updateSlide();
+      }, 4000);
+    }
+
+    function showEnding() {
+      const ending = document.getElementById("endingScene");
+      ending.style.pointerEvents = "auto";
+      ending.style.opacity = "1";
+    }
+
+    function replayStory() {
+      const ending = document.getElementById("endingScene");
+      ending.style.opacity = "0";
+      ending.style.pointerEvents = "none";
+
+      slideIndex = 0;
+      updateSlide();
+      startSlideshow();
+    }
+
+    document.getElementById("playBtn").addEventListener("click", () => {
+      showLove();
+      startSlideshow();
+    });
+
+    const starsContainer = document.getElementById("stars");
+    for (let s = 0; s < 120; s++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      starsContainer.appendChild(star);
+    }
+
+    console.assert(Array.isArray(stories), "stories array missing");
+    console.assert(typeof showEnding === "function", "showEnding missing");
+  </script>
+</body>
+</html>
