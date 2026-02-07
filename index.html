@@ -9,6 +9,62 @@
 
   <style>
     * { box-sizing: border-box; }
+    /* MOBILE OPTIMIZATION */
+@media (max-width: 600px) {
+
+  body {
+    align-items: flex-start;
+    padding-top: 40px;
+  }
+
+  .card {
+    width: 94vw;
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .story-buttons {
+    gap: 10px;
+  }
+
+  .polaroid {
+    width: 90px;
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .story-view img {
+    width: 80vw;
+    max-width: 260px;
+  }
+
+  .moon {
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .sky-letter {
+    font-size: 20px;
+  }
+
+  #endingScene {
+    font-size: 26px;
+    padding: 20px;
+    text-align: center;
+  }
+}
+
 
     body {
       margin: 0;
@@ -167,10 +223,93 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* GIFT WRAP INTRO */
+#giftOverlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.wrapSide {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(180deg,#ff758f,#ff4d6d);
+  transition: transform 2s ease;
+}
+
+#wrapLeft { left: 0; }
+#wrapRight { right: 0; }
+
+.ribbonV {
+  position: absolute;
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(180deg,#ffd700,#ffcc33);
+}
+
+.ribbonH {
+  position: absolute;
+  height: 14px;
+  width: 100%;
+  background: linear-gradient(90deg,#ffd700,#ffcc33);
+}
+
+.bow {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle,#ffd700,#ffcc33);
+  box-shadow: 0 0 20px rgba(255,215,0,.9);
+}
+
+.bow::before,
+.bow::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 18px;
+  background: linear-gradient(45deg,#ffd700,#ffcc33);
+  border-radius: 50%;
+  top: 13px;
+}
+
+.bow::before { left: -20px; }
+.bow::after { right: -20px; }
+
+.tapText {
+  position: absolute;
+  bottom: 120px;
+  font-family: 'Playfair Display', serif;
+  color: white;
+}
+
+@keyframes bowBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.2) translateY(-6px); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
   </style>
 </head>
 
 <body>
+  <!-- Gift Wrap Opening Overlay -->
+<div id="giftOverlay">
+  <div id="wrapLeft" class="wrapSide"></div>
+  <div id="wrapRight" class="wrapSide"></div>
+  <div class="ribbonV"></div>
+  <div class="ribbonH"></div>
+  <div class="bow"></div>
+  <div class="tapText">Tap to unwrap ❤️</div>
+</div>
   <div class="stars" id="stars"></div>
   <div class="sky-text" id="skyText"></div>
   <div class="moon" id="moon"></div>
@@ -327,6 +466,26 @@
 
     console.assert(Array.isArray(stories), "stories array missing");
     console.assert(typeof showEnding === "function", "showEnding missing");
+    /* Gift wrap interaction */
+const overlay = document.getElementById("giftOverlay");
+const left = document.getElementById("wrapLeft");
+const right = document.getElementById("wrapRight");
+const bow = document.querySelector(".bow");
+
+overlay.addEventListener("click", () => {
+  bow.style.animation = "bowBounce 700ms ease";
+
+  setTimeout(() => {
+    left.style.transform = "translateX(-100%)";
+    right.style.transform = "translateX(100%)";
+
+    setTimeout(() => {
+      overlay.style.display = "none";
+    }, 2000);
+
+  }, 700);
+});
+
   </script>
 </body>
 </html>
